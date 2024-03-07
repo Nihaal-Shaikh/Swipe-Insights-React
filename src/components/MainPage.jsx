@@ -16,7 +16,7 @@ export default function MainPage() {
 
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-teal-500 to-purple-700">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-400 to-purple-300">
       <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal" >
         {type === 'login' && <div className="bg-white bg-opacity-25 p-8 rounded-md shadow-md w-full sm:w-96">
           <h1 className="text-3xl font-extrabold text-white mb-4">Swipe Insights</h1>
@@ -24,7 +24,7 @@ export default function MainPage() {
 
           <Login>
             <div className="mt-4">
-              <button onClick={() => handleClick('forgot-password')}>Forgot password?</button>
+              <button className="italic" onClick={() => handleClick('forgot-password')}>Forgot password?</button>
             </div>
             <div>
               <button onClick={() => handleClick('register')}>Register</button>
