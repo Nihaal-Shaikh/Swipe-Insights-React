@@ -36,14 +36,14 @@ export default function MainPage() {
             <h1 className="text-3xl font-extrabold text-white mb-4">Swipe Insights</h1>
             <p className="text-lg text-gray-300 mb-8">Unlock the Future of Insights</p>
             <ForgotPassword>
-              <button onClick={() => handleClick('login')}>Go back</button>
+              <button className="mt-4" onClick={() => handleClick('login')}>Go back</button>
             </ForgotPassword>
           </div>}
           {type === 'register' && <div className="bg-white bg-opacity-25 p-8 rounded-md shadow-md w-full sm:w-96">
             <h1 className="text-3xl font-extrabold text-white mb-4">Swipe Insights</h1>
             <p className="text-lg text-gray-300 mb-8">Unlock the Future of Insights</p>
             <Register>
-              <button onClick={() => handleClick('login')}>Go back</button>
+              <button className="mt-4" onClick={() => handleClick('login')}>Go back</button>
             </Register>
           </div>}
         </>

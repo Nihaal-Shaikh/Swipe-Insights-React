@@ -12,7 +12,7 @@ export default function ForgotPassword({ children }) {
             type="submit"
             className="w-full bg-teal-500 text-white p-3 rounded-md hover:bg-teal-600 transition duration-300 focus:outline-none"
         >
-            Login
+            Send code
         </button>
     </form>
     {children}
