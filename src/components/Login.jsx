@@ -1,6 +1,7 @@
-export default function Login() {
+export default function Login({ children }) {
 
     return (
+        <>
         <form className="space-y-4">
             <input
                 type="text"
@@ -19,5 +20,7 @@ export default function Login() {
                 Login
             </button>
         </form>
+        {children}
+        </>
     );
 }
