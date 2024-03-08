@@ -10,11 +10,7 @@ function Dashboard () {
     useEffect(() => {
       axios.get('http://127.0.0.1:8000/api/images')
         .then(response => {
-          const modifiedImages = response.data.images.map(image =>
-            image.replace('public', 'http://127.0.0.1:8000/storage')
-          );
-          console.log(modifiedImages)
-          setImages(modifiedImages);
+          setImages(response.data.images);
         })
         .catch(error => {
           console.error('Error fetching images:', error);
@@ -28,11 +24,9 @@ function Dashboard () {
 
   const childRefs = useMemo(
     () =>
-      Array(images.length)
-        .fill(0)
-        .map((i) => React.createRef()),
-    []
-  )
+      images.map(() => React.createRef()),
+    [images]
+  );
 
   const updateCurrentIndex = (val) => {
     setCurrentIndex(val)
@@ -60,17 +54,17 @@ function Dashboard () {
 
   const swipe = async (dir) => {
     if (canSwipe && currentIndex < images.length) {
-      await childRefs[currentIndex].current.swipe(dir) // Swipe the card!
+      childRefs[currentIndex].current && (await childRefs[currentIndex].current.swipe(dir));
     }
-  }
+  };
 
   // increase current index and show card
   const goBack = async () => {
-    if (!canGoBack) return
-    const newIndex = currentIndex + 1
-    updateCurrentIndex(newIndex)
-    await childRefs[newIndex].current.restoreCard()
-  }
+    if (!canGoBack) return;
+    const newIndex = currentIndex + 1;
+    updateCurrentIndex(newIndex);
+    childRefs[newIndex].current && (await childRefs[newIndex].current.restoreCard());
+  };
 
   return (
     <div>
