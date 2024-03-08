@@ -1,9 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate  } from "react-router-dom";
 
 export default function Login({ children }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -16,13 +19,13 @@ export default function Login({ children }) {
 
       // Assuming your Laravel API returns a token upon successful login
       const token = response.data.value;
+      navigate("/dashboard");
 
       // Handle the token as needed (store in localStorage, context, etc.)
 
-      console.log(token);
+      setIsLoggedIn(true);
       // You may want to redirect or perform other actions here
     } catch (error) {
-        console.log(error.response.data.message)
       console.error("Error during login:", error);
       // Handle login error (show a message, redirect, etc.)
     }
