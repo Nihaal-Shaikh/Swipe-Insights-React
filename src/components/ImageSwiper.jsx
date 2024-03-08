@@ -1,11 +1,13 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react'
 import TinderCard from 'react-tinder-card';
-import './Dashboard.css'
+import './ImageSwiper.css'
 import axios from "axios";
 
-function Dashboard () {
+export default function ImageSwiper () {
 
     const [images, setImages] = useState([]);
+    const [left, setLeft] = useState('Left');
+    const [right, setRight] = useState('Right');
   
     useEffect(() => {
       axios.get('http://127.0.0.1:8000/api/images')
@@ -15,6 +17,15 @@ function Dashboard () {
         .catch(error => {
           console.error('Error fetching images:', error);
         });
+        
+      axios.get('http://127.0.0.1:8000/api/image-statuses')
+      .then(response => {
+        setLeft(response.data.imageStatuses[0]);
+        setRight(response.data.imageStatuses[1]);
+      })
+      .catch(error => {
+        console.error('Error fetching image-status:', error);
+      });
     }, []);
     
   const [currentIndex, setCurrentIndex] = useState(images.length - 1)
@@ -87,21 +98,26 @@ function Dashboard () {
         ))}
       </div>
       <div className='buttons'>
-        <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('left')}>Swipe left!</button>
+        <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('left')}>{left}</button>
         <button style={{ backgroundColor: !canGoBack && '#c3c4d3' }} onClick={() => goBack()}>Undo swipe!</button>
-        <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('right')}>Swipe right!</button>
+        <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('right')}>{right}</button>
       </div>
       {lastDirection ? (
         <h2 key={lastDirection} className='infoText'>
-          You swiped {lastDirection}
+          Marked as: {lastDirection === 'left' ? left : right}
         </h2>
       ) : (
         <h2 className='infoText'>
           Swipe a card or press a button to get Restore Card button visible!
         </h2>
       )}
+      <h2 className="text-2xl text-white mt-8 mb-4">Instructions</h2>
+      <div className="text-center text-gray-700">
+        <p>Swipe up for hehe</p>
+        <p>Swipe down for hehe</p>
+        <p>Swipe right for hehe</p>
+        <p>Swipe left for hehe</p>
+      </div>
     </div>
-  )
+  );
 }
-
-export default Dashboard

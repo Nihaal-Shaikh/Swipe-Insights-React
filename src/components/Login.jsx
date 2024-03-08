@@ -19,7 +19,7 @@ export default function Login({ children }) {
 
       // Assuming your Laravel API returns a token upon successful login
       const token = response.data.value;
-      navigate("/dashboard");
+      navigate("/image-swiper");
 
       // Handle the token as needed (store in localStorage, context, etc.)
 
