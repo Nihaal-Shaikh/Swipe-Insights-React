@@ -7,7 +7,6 @@ const Dashboard = () => {
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/images')
             .then(response => {
-
                 const modifiedImages = response.data.images.map(image =>
                     image.replace('public', 'storage')
                 );
@@ -18,20 +17,21 @@ const Dashboard = () => {
             });
     }, []);
 
-    return (
-        <div>
-            <h1 className="text-2xl font-bold mb-4">Your Dashboard</h1>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    return (<>
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-400 to-purple-300">
+            <div>
+                <h1 className="text-2xl font-bold mb-4">Your Dashboard</h1>
                 {images.map((image, index) => (
                     <img
                         key={index}
                         src={`http://127.0.0.1:8000/${image}`}
                         alt={`Image ${index}`}
-                        className="w-full object-cover h-48 rounded-md"
+                        className="w-full object-cover h-64 rounded-md"
                     />
                 ))}
             </div>
         </div>
+    </>
     );
 };
 
