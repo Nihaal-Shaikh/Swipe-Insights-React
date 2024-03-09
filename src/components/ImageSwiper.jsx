@@ -24,14 +24,15 @@ export default function ImageSwiper() {
     axios.get('http://127.0.0.1:8000/api/images')
       .then(response => {
         setImages(response.data.images);
+        setTimeout(() => {
+          if(images.length <= 0) {
+            dialog.current.open();
+          }
+        }, 1);
       })
       .catch(error => {
         console.error('Error fetching images:', error);
       });
-
-    if (images.length <= 0) {
-      dialog.current.open();
-    }
 
     axios.get('http://127.0.0.1:8000/api/image-statuses')
       .then(response => {
