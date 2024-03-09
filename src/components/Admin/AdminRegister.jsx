@@ -1,4 +1,4 @@
-export default function ForgotPassword({ children }) {
+export default function AdminRegister({ children }) {
 
   return (
     <>
@@ -12,7 +12,7 @@ export default function ForgotPassword({ children }) {
             type="submit"
             className="w-full bg-teal-500 text-white p-3 rounded-md hover:bg-teal-600 transition duration-300 focus:outline-none"
         >
-            Send code
+            Register
         </button>
     </form>
     {children}

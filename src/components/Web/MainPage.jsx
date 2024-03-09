@@ -20,7 +20,7 @@ export default function MainPage() {
       <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal" >
         {type === 'login' && <div className="bg-white bg-opacity-25 p-8 rounded-md shadow-md w-full sm:w-96">
           <h1 className="text-3xl font-extrabold text-white mb-4">Swipe Insights</h1>
-          <p className="text-lg text-gray-300 mb-8">Unlock the Future of Insights</p>
+          <p className="text-lg text-white mb-8">Unlock the Future of Insights</p>
 
           <Login>
             <div className="mt-4">
