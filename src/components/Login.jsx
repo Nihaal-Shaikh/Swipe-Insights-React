@@ -1,61 +1,67 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate  } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../store/AuthContext";
 
 export default function Login({ children }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+    const { login } = useAuth();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
 
-    try {
-      const response = await axios.post("http://127.0.0.1:8000/api/login", {
-        email,
-        password,
-      });
+    const handleLogin = async (e) => {
+        e.preventDefault();
 
-      // Assuming your Laravel API returns a token upon successful login
-      const token = response.data.value;
-      navigate("/image-swiper");
+        try {
+            const response = await axios.post("http://127.0.0.1:8000/api/login", {
+                email,
+                password,
+            });
 
-      // Handle the token as needed (store in localStorage, context, etc.)
+            const tokenable_id = response.data.token.tokenable_id;
+      
+            // Store token and tokenable_id in the context
+            login(tokenable_id);
+            
+            navigate("/image-swiper");
 
-      setIsLoggedIn(true);
-      // You may want to redirect or perform other actions here
-    } catch (error) {
-      console.error("Error during login:", error);
-      // Handle login error (show a message, redirect, etc.)
-    }
-  };
+            // Handle the token as needed (store in localStorage, context, etc.)
 
-  return (
-    <>
-      <form className="space-y-4" onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-3 rounded-md border border-gray-300 focus:outline-none focus:border-teal-500"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-3 rounded-md border border-gray-300 focus:outline-none focus:border-teal-500"
-        />
-        <button
-          type="submit"
-          className="w-full bg-teal-500 text-white p-3 rounded-md hover:bg-teal-600 transition duration-300 focus:outline-none"
-        >
-          Login
-        </button>
-      </form>
-      {children}
-    </>
-  );
+            setIsLoggedIn(true);
+            // You may want to redirect or perform other actions here
+        } catch (error) {
+            console.error("Error during login:", error);
+            // Handle login error (show a message, redirect, etc.)
+        }
+    };
+
+    return (
+        <>
+            <form className="space-y-4" onSubmit={handleLogin}>
+                <input
+                    type="text"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full p-3 rounded-md border border-gray-300 focus:outline-none focus:border-teal-500"
+                />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full p-3 rounded-md border border-gray-300 focus:outline-none focus:border-teal-500"
+                />
+                <button
+                    type="submit"
+                    className="w-full bg-teal-500 text-white p-3 rounded-md hover:bg-teal-600 transition duration-300 focus:outline-none"
+                >
+                    Login
+                </button>
+            </form>
+            {children}
+        </>
+    );
 }
