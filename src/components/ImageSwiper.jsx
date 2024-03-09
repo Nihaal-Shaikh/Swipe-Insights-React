@@ -3,10 +3,12 @@ import TinderCard from 'react-tinder-card';
 import './ImageSwiper.css'
 import axios from "axios";
 import { useAuth } from '../store/AuthContext';
+import FinalModal from './FinalModal';
 
 export default function ImageSwiper() {
 
   const { userToken, tokenableId } = useAuth();
+  const dialog = useRef();
 
   console.log(tokenableId);
 
@@ -116,10 +118,13 @@ export default function ImageSwiper() {
 
   
   useEffect(() => {
-    if (countdown === 0) {
+    if(countdown === 0){
       console.log(swipeData)
       // Make API call to send swipeData to your Laravel endpoint
-      axios.post('http://127.0.0.1:8000/api/submit-swipe-data', { swipeData, user_id: tokenableId })
+      axios.post('http://127.0.0.1:8000/api/submit-swipe-data', {
+        swipeData: swipeData,
+        user_id: tokenableId
+      })
         .then(response => {
           console.log('Swipe data submitted successfully:', response);
           // You may want to reset the countdown or perform other actions after successful submission
@@ -128,6 +133,7 @@ export default function ImageSwiper() {
           console.error('Error submitting swipe data:', error);
           // Handle error accordingly
         });
+      dialog.current.open();
     }
   }, [countdown, swipeData]);
 
@@ -152,6 +158,7 @@ export default function ImageSwiper() {
         ))}
         {swipeDataLength === 5 &&
           <>
+            <FinalModal ref={dialog} />
             <p>Your answers will be submitted in</p>
             <span className="text-4xl font-bold mr-2">{countdown}</span>
             <div role="status">

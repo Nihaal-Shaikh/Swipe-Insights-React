@@ -11,7 +11,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    setUserToken(null);
     setTokenableId(null);
   };
 
