@@ -2,8 +2,8 @@ import React, { useState, useMemo, useRef, useEffect } from 'react'
 import TinderCard from 'react-tinder-card';
 import './ImageSwiper.css'
 import axios from "axios";
-import FinalModal from './FinalModal';
-import FinalLoader from './FinalLoader';
+import Modal from './Modal';
+import Loader from './Loader';
 import { useNavigate } from "react-router-dom";
 import Header from './Header';
 
@@ -28,6 +28,10 @@ export default function ImageSwiper() {
       .catch(error => {
         console.error('Error fetching images:', error);
       });
+
+    if (images.length <= 0) {
+      dialog.current.open();
+    }
 
     axios.get('http://127.0.0.1:8000/api/image-statuses')
       .then(response => {
@@ -152,52 +156,58 @@ export default function ImageSwiper() {
   return (
     <>
       <div>
-      {localStorage.getItem("userName") && <Header />}
-        <div className='cardContainer mt-20'>
-          {images.map((imageUrl, index) => (
-            <TinderCard
-              ref={childRefs[index]}
-              className='swipe'
-              key={imageUrl}
-              onSwipe={(dir) => swiped(dir, imageUrl, index)}
-              onCardLeftScreen={() => outOfFrame(imageUrl, index)}
-            >
-              <div
-                style={{ backgroundImage: `url(${imageUrl})` }}
-                className='card'
-              >
-              </div>
-            </TinderCard>
-          ))}
-          {swipeDataLength === images.length && (
-            <>
-              <FinalModal ref={dialog} />
-              <p>Your answers will be submitted in</p>
-              <span className="text-4xl font-bold mr-2">{countdown}</span>
-              <FinalLoader />
-            </>
-          )}
-        </div>
-        <div className='buttons'>
-          <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('left')}>{left}</button>
-          <button style={{ backgroundColor: !canGoBack && '#c3c4d3' }} onClick={() => goBack()}>Undo swipe!</button>
-          <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('right')}>{right}</button>
-        </div>
-        {lastDirection ? (
-          <h2 key={lastDirection} className='infoText'>
-            Marked as: {lastDirection === 'left' ? left : (lastDirection === 'right' ? right : upOrDown)}
-          </h2>
+        {localStorage.getItem("userName") && <Header />}
+        {images.length > 0 ? (
+          <>
+            <div className='cardContainer mt-20'>
+              {images.map((imageUrl, index) => (
+                <TinderCard
+                  ref={childRefs[index]}
+                  className='swipe'
+                  key={imageUrl}
+                  onSwipe={(dir) => swiped(dir, imageUrl, index)}
+                  onCardLeftScreen={() => outOfFrame(imageUrl, index)}
+                >
+                  <div
+                    style={{ backgroundImage: `url(${imageUrl})` }}
+                    className='card'
+                  >
+                  </div>
+                </TinderCard>
+              ))}
+              {swipeDataLength === images.length && (
+                <>
+                  <Modal ref={dialog} />
+                  <p>Your answers will be submitted in</p>
+                  <span className="text-4xl font-bold mr-2">{countdown}</span>
+                  <Loader />
+                </>
+              )}
+            </div>
+            <div className='buttons'>
+              <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('left')}>{left}</button>
+              <button style={{ backgroundColor: !canGoBack && '#c3c4d3' }} onClick={() => goBack()}>Undo swipe!</button>
+              <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('right')}>{right}</button>
+            </div>
+            {lastDirection ? (
+              <h2 key={lastDirection} className='infoText'>
+                Marked as: {lastDirection === 'left' ? left : (lastDirection === 'right' ? right : upOrDown)}
+              </h2>
+            ) : (
+              <h2 className='infoText'>
+                Swipe the images based on your thoughts!
+              </h2>
+            )}
+            <h2 className="text-2xl text-white mt-8 mb-4">Instructions</h2>
+            <div className="text-center text-gray-700">
+              <p>Swipe left for {left}</p>
+              <p>Swipe right for {right}</p>
+              <p>Swipe up or down if you are unsure</p>
+            </div>
+          </>
         ) : (
-          <h2 className='infoText'>
-            Swipe the images based on your thoughts!
-          </h2>
+          <Modal ref={dialog} type='noImages' />
         )}
-        <h2 className="text-2xl text-white mt-8 mb-4">Instructions</h2>
-        <div className="text-center text-gray-700">
-          <p>Swipe left for {left}</p>
-          <p>Swipe right for {right}</p>
-          <p>Swipe up or down if you are unsure</p>
-        </div>
       </div>
     </>
   );

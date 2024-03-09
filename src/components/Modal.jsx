@@ -2,7 +2,7 @@ import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "re
 import { useNavigate } from "react-router-dom";
 import { createPortal } from "react-dom";
 
-const FinalModal = forwardRef(function FinalModal({ onReset }, ref) {
+const Modal = forwardRef(function Modal({ onReset, type }, ref) {
 
     const dialog = useRef();
     const navigate = useNavigate();
@@ -10,7 +10,7 @@ const FinalModal = forwardRef(function FinalModal({ onReset }, ref) {
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
-        if (isOpen) {
+        if (isOpen && type !== 'noImages') {
             const countdownInterval = setInterval(() => {
                 setCountdown((prevCountdown) => (prevCountdown > 0 ? prevCountdown - 1 : 0));
             }, 1000);
@@ -52,9 +52,18 @@ const FinalModal = forwardRef(function FinalModal({ onReset }, ref) {
 
     return createPortal(
         <dialog ref={dialog} className="result-modal" onClose={onReset}>
-            <p>Thank you for your insights!</p>
-            <p>You will be logged out in</p>
-            <p>{countdown}</p>
+            {type !== 'noImages' ? (
+                <>
+                    <p>Thank you for your insights!</p>
+                    <p>You will be logged out in</p>
+                    <p>{countdown}</p>
+                </>
+            ) : (
+                <>
+                    <p>Sorry! There are no images available to swipe at the moment</p>
+                    <p>Please try again another time</p>
+                </>
+            )}
             <form method="dialog" onSubmit={handleReset}>
                 <button>Close</button>
             </form>
@@ -63,4 +72,4 @@ const FinalModal = forwardRef(function FinalModal({ onReset }, ref) {
     );
 })
 
-export default FinalModal;
+export default Modal;

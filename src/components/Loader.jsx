@@ -1,4 +1,4 @@
-export default function FinalLoader() {
+export default function Loader() {
 
     return (
         <>

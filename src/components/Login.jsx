@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function Login({ children }) {
-    
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -42,7 +42,6 @@ export default function Login({ children }) {
       const storedTokenableId = localStorage.getItem("tokenableId");
   
       if (storedTokenableId) {
-        console.log('hi');
         navigate('/image-swiper');
       }
     }, [navigate]);
