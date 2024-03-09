@@ -1,12 +1,10 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createPortal } from "react-dom";
-import { useAuth } from "../store/AuthContext";
 
 const FinalModal = forwardRef(function FinalModal({ onReset }, ref) {
 
     const dialog = useRef();
-    const { logout } = useAuth();
     const navigate = useNavigate();
     const [countdown, setCountdown] = useState(5);
     const [isOpen, setIsOpen] = useState(false);
@@ -45,8 +43,8 @@ const FinalModal = forwardRef(function FinalModal({ onReset }, ref) {
     });
 
     const handleReset = (event) => {
-        // Invoke logout when the close button is clicked
-        logout();
+        // Clear all items in localStorage
+        localStorage.clear();
         // Call the provided onReset function
         onReset;
         navigate("/");

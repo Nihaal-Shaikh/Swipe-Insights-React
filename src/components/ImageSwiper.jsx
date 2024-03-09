@@ -2,14 +2,16 @@ import React, { useState, useMemo, useRef, useEffect } from 'react'
 import TinderCard from 'react-tinder-card';
 import './ImageSwiper.css'
 import axios from "axios";
-import { useAuth } from '../store/AuthContext';
 import FinalModal from './FinalModal';
 import FinalLoader from './FinalLoader';
+import { useNavigate } from "react-router-dom";
+import Header from './Header';
 
 export default function ImageSwiper() {
 
-  const { userToken, tokenableId } = useAuth();
+  const tokenableId = localStorage.getItem("tokenableId");
   const dialog = useRef();
+  const navigate = useNavigate();
 
   const [images, setImages] = useState([]);
   const [left, setLeft] = useState('Left');
@@ -117,9 +119,9 @@ export default function ImageSwiper() {
     };
   }, [swipeDataLength]);
 
-  
+
   useEffect(() => {
-    if(countdown === 0){
+    if (countdown === 0) {
       // Make API call to send swipeData to your Laravel endpoint
       axios.post('http://127.0.0.1:8000/api/submit-swipe-data', {
         swipeData: swipeData,
@@ -137,54 +139,66 @@ export default function ImageSwiper() {
     }
   }, [countdown, swipeData]);
 
+  // Check localStorage for tokenableId on component mount
+  useEffect(() => {
+    const storedTokenableId = localStorage.getItem("tokenableId");
+
+    if (!storedTokenableId) {
+      console.log('hi');
+      navigate('/');
+    }
+  }, [navigate]);
+
   return (
-    <div>
-      <h1>React Tinder Card</h1>
-      <div className='cardContainer'>
-        {images.map((imageUrl, index) => (
-          <TinderCard
-            ref={childRefs[index]}
-            className='swipe'
-            key={imageUrl}
-            onSwipe={(dir) => swiped(dir, imageUrl, index)}
-            onCardLeftScreen={() => outOfFrame(imageUrl, index)}
-          >
-            <div
-              style={{ backgroundImage: `url(${imageUrl})` }}
-              className='card'
+    <>
+      <div>
+      {localStorage.getItem("userName") && <Header />}
+        <div className='cardContainer mt-20'>
+          {images.map((imageUrl, index) => (
+            <TinderCard
+              ref={childRefs[index]}
+              className='swipe'
+              key={imageUrl}
+              onSwipe={(dir) => swiped(dir, imageUrl, index)}
+              onCardLeftScreen={() => outOfFrame(imageUrl, index)}
             >
-            </div>
-          </TinderCard>
-        ))}
-        {swipeDataLength === images.length && (
-          <>
-            <FinalModal ref={dialog} />
-            <p>Your answers will be submitted in</p>
-            <span className="text-4xl font-bold mr-2">{countdown}</span>
-            <FinalLoader />
-          </>
+              <div
+                style={{ backgroundImage: `url(${imageUrl})` }}
+                className='card'
+              >
+              </div>
+            </TinderCard>
+          ))}
+          {swipeDataLength === images.length && (
+            <>
+              <FinalModal ref={dialog} />
+              <p>Your answers will be submitted in</p>
+              <span className="text-4xl font-bold mr-2">{countdown}</span>
+              <FinalLoader />
+            </>
+          )}
+        </div>
+        <div className='buttons'>
+          <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('left')}>{left}</button>
+          <button style={{ backgroundColor: !canGoBack && '#c3c4d3' }} onClick={() => goBack()}>Undo swipe!</button>
+          <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('right')}>{right}</button>
+        </div>
+        {lastDirection ? (
+          <h2 key={lastDirection} className='infoText'>
+            Marked as: {lastDirection === 'left' ? left : (lastDirection === 'right' ? right : upOrDown)}
+          </h2>
+        ) : (
+          <h2 className='infoText'>
+            Swipe the images based on your thoughts!
+          </h2>
         )}
+        <h2 className="text-2xl text-white mt-8 mb-4">Instructions</h2>
+        <div className="text-center text-gray-700">
+          <p>Swipe left for {left}</p>
+          <p>Swipe right for {right}</p>
+          <p>Swipe up or down if you are unsure</p>
+        </div>
       </div>
-      <div className='buttons'>
-        <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('left')}>{left}</button>
-        <button style={{ backgroundColor: !canGoBack && '#c3c4d3' }} onClick={() => goBack()}>Undo swipe!</button>
-        <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('right')}>{right}</button>
-      </div>
-      {lastDirection ? (
-        <h2 key={lastDirection} className='infoText'>
-          Marked as: {lastDirection === 'left' ? left : (lastDirection === 'right' ? right : upOrDown)}
-        </h2>
-      ) : (
-        <h2 className='infoText'>
-          Swipe a card or press a button to get Restore Card button visible!
-        </h2>
-      )}
-      <h2 className="text-2xl text-white mt-8 mb-4">Instructions</h2>
-      <div className="text-center text-gray-700">
-        <p>Swipe left for {left}</p>
-        <p>Swipe right for {right}</p>
-        <p>Swipe up or down if you are unsure</p>
-      </div>
-    </div>
+    </>
   );
 }

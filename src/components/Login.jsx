@@ -1,11 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../store/AuthContext";
 
 export default function Login({ children }) {
-
-    const { login } = useAuth();
+    
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -21,10 +19,12 @@ export default function Login({ children }) {
             });
 
             const tokenable_id = response.data.token.tokenable_id;
-      
-            // Store token and tokenable_id in the context
-            login(tokenable_id);
-            
+            const user_name = response.data.name;
+
+            // Store tokenableId in localStorage
+            localStorage.setItem("tokenableId", tokenable_id);
+            localStorage.setItem("userName", user_name);
+
             navigate("/image-swiper");
 
             // Handle the token as needed (store in localStorage, context, etc.)
@@ -35,7 +35,17 @@ export default function Login({ children }) {
             console.error("Error during login:", error);
             // Handle login error (show a message, redirect, etc.)
         }
-    };
+    };  
+    
+    // Check localStorage for tokenableId on component mount
+    useEffect(() => {
+      const storedTokenableId = localStorage.getItem("tokenableId");
+  
+      if (storedTokenableId) {
+        console.log('hi');
+        navigate('/image-swiper');
+      }
+    }, [navigate]);
 
     return (
         <>
