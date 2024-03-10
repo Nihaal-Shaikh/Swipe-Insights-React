@@ -10,7 +10,7 @@ const Modal = forwardRef(function Modal({ onReset, type }, ref) {
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
-        if (isOpen && type !== 'noImages') {
+        if (isOpen && type !== 'noImages' && type !== 'statusError') {
             const countdownInterval = setInterval(() => {
                 setCountdown((prevCountdown) => (prevCountdown > 0 ? prevCountdown - 1 : 0));
             }, 1000);
@@ -52,16 +52,21 @@ const Modal = forwardRef(function Modal({ onReset, type }, ref) {
 
     return createPortal(
         <dialog ref={dialog} className="result-modal" onClose={onReset}>
-            {type !== 'noImages' ? (
+            {type === 'successful' ? (
                 <>
                     <p>Thank you for your insights!</p>
                     <p>You will be logged out in</p>
                     <p>{countdown}</p>
                 </>
-            ) : (
+            ) : type === "noImages" ? (
                 <>
                     <p>Sorry! There are no images available to swipe at the moment</p>
                     <p>Please try again another time</p>
+                </>
+            ) : (
+                <>
+                    <p>Swipe options are not available</p>
+                    <p>Please contact the Swipe Insights team</p>
                 </>
             )}
             <form method="dialog" onSubmit={handleReset}>

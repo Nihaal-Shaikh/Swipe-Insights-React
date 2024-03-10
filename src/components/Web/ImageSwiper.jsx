@@ -19,13 +19,14 @@ export default function ImageSwiper() {
   const upOrDown = 'Unsure';
   const [swipeData, setSwipeData] = useState({});
   const [countdown, setCountdown] = useState(5);
+  const [errorStatus, setErrorStatus] = useState(false);
 
   useEffect(() => {
     axios.get('http://127.0.0.1:8000/api/images')
       .then(response => {
         setImages(response.data.images);
         setTimeout(() => {
-          if(images.length <= 0) {
+          if(images.length <= 0 && dialog.current) {
             dialog.current.open();
           }
         }, 1);
@@ -38,6 +39,12 @@ export default function ImageSwiper() {
       .then(response => {
         setLeft(response.data.imageStatuses[0]);
         setRight(response.data.imageStatuses[1]);
+        if(response.data.imageStatuses.length < 2) {
+            setErrorStatus(true);
+            if(dialog.current){
+            dialog.current.open();
+          }
+        }
       })
       .catch(error => {
         console.error('Error fetching image-status:', error);
@@ -156,6 +163,7 @@ export default function ImageSwiper() {
 
   return (
     <>
+      {errorStatus && <Modal ref={dialog} type='statusError' />}
       <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-400 to-purple-300">
         {localStorage.getItem("userName") && <Header />}
         {images.length > 0 ? (
@@ -178,7 +186,7 @@ export default function ImageSwiper() {
               ))}
               {swipeDataLength === images.length && (
                 <>
-                  <Modal ref={dialog} />
+                  <Modal ref={dialog} type="successful" />
                   <p>Your answers will be submitted in</p>
                   <span className="text-4xl font-bold mr-2">{countdown}</span>
                   <Loader />
