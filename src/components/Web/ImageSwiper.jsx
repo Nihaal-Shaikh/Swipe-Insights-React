@@ -156,7 +156,7 @@ export default function ImageSwiper() {
 
   return (
     <>
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-400 to-purple-300">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-400 to-purple-300">
         {localStorage.getItem("userName") && <Header />}
         {images.length > 0 ? (
           <>
