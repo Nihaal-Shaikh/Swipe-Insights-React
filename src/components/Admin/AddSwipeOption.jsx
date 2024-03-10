@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 export default function AddSwipeOption() {
+
+  const navigate = useNavigate();
+  
   const [status, setStatus] = useState('');
   const [active, setActive] = useState(false);
 
@@ -10,6 +15,26 @@ export default function AddSwipeOption() {
 
   const handleActiveChange = (e) => {
     setActive(e.target.checked);
+  };
+
+  const handleSubmit = () => {
+    console.log(status);
+    console.log(active);
+    axios.post('http://127.0.0.1:8000/api/web-admin/add-image-status', {
+      status,
+      active,
+    })
+    .then(response => {
+      // Handle the response as needed
+      console.log('API response:', response.data);
+      setStatus('');
+      setActive(false);
+      navigate('/web-admin/swipe-options')
+    })
+    .catch(error => {
+      // Handle errors
+      console.error('API error:', error);
+    });
   };
 
   return (
@@ -68,6 +93,7 @@ export default function AddSwipeOption() {
         {/* Submit Button */}
         <button
           type="button"
+          onClick={handleSubmit}
           className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue"
         >
           Submit

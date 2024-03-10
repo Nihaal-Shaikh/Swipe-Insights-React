@@ -22,7 +22,7 @@ export default function ImageStatus() {
     // Ag-Grid column definitions
     const columnDefs = [
         { headerName: 'ID', field: 'id', sortable: true, filter: true },
-        { headerName: 'Status', field: 'status', sortable: true, filter: true },
+        { headerName: 'Swipe Options', field: 'status', sortable: true, filter: true },
         {
             headerName: 'Active', field: 'active', sortable: true, filter: true,
             cellRenderer: (params) => (
@@ -72,7 +72,7 @@ export default function ImageStatus() {
 
             {/* Ag-Grid component */}
             <div className="bg-white shadow-md rounded-md p-4">
-                <Link to='/web-admin/swipe-options/add'>Add Status</Link>
+                <Link to='/web-admin/swipe-options/add'>Add Swipe Options</Link>
                 <div className="ag-theme-alpine">
                     <AgGridReact
                         columnDefs={columnDefs}
