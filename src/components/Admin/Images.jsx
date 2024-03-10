@@ -64,12 +64,14 @@ export default function Images() {
             <Link to='/web-admin' className="underline">Go to dashboard</Link>
 
             {/* Ag-Grid component */}
-            <div className="ag-theme-alpine" style={{ height: '400px', width: '100%' }}>
-                <AgGridReact
-                    columnDefs={columnDefs}
-                    rowData={rowData}
-                    domLayout='autoHeight'
-                />
+            <div className="bg-white shadow-md rounded-md p-4">
+                <div className="ag-theme-alpine">
+                    <AgGridReact
+                        columnDefs={columnDefs}
+                        rowData={rowData}
+                        domLayout='autoHeight'
+                    />
+                </div>
             </div>
         </div>
     );
