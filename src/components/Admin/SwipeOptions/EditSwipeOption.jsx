@@ -12,7 +12,6 @@ export default function EditSwipeOption() {
     useEffect(() => {
             axios.get(`http://127.0.0.1:8000/api/web-admin/edit-image-status/${id}`)
               .then((response) => {
-                console.log(response.data);
                 setEditData(response.data);
                 console.log(`Edit clicked for ID: ${id}`, response.data);
               })

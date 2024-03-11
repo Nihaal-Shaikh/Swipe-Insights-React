@@ -5,9 +5,9 @@ import ImageSwiper from '../components/Web/ImageSwiper'
 import Layout from '../components/Admin/Layout';
 import Dashboard from '../components/Admin/Dashboard';
 import Images from '../components/Admin/Images';
-import ImageStatus from '../components/Admin/ImageStatus';
-import AddSwipeOption from '../components/Admin/AddSwipeOption';
-import EditSwipeOption from '../components/Admin/EditSwipeOption';
+import AddSwipeOption from '../components/Admin/SwipeOptions/AddSwipeOption';
+import EditSwipeOption from '../components/Admin/SwipeOptions/EditSwipeOption';
+import SwipeOptions from '../components/Admin/SwipeOptions/SwipeOptions';
 
 export default function AppRoutes() {
 
@@ -21,7 +21,7 @@ export default function AppRoutes() {
                 <Route index element={<Dashboard />} />
                 <Route path="images" element={<Images />} />
                 <Route path="swipe-options">
-                    <Route index element={<ImageStatus />} />
+                    <Route index element={<SwipeOptions />} />
                     <Route path="add" element={<AddSwipeOption />} />
                     <Route path="edit/:id" element={<EditSwipeOption />} />
                 </Route>

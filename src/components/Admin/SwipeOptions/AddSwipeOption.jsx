@@ -39,14 +39,12 @@ export default function AddSwipeOption(props) {
 
     axios.post('http://127.0.0.1:8000/api/web-admin/add-image-status', requestData)
     .then(response => {
-      // Handle the response as needed
       console.log('API response:', response.data);
       setStatus('');
       setActive(false);
       navigate('/web-admin/swipe-options')
     })
     .catch(error => {
-      // Handle errors
       console.error('API error:', error);
     });
   };
@@ -55,8 +53,6 @@ export default function AddSwipeOption(props) {
     <div className="container mx-auto mt-8">
       <div className="max-w-md mx-auto bg-white p-8 border shadow-md rounded-md">
         <h1 className="text-2xl font-bold mb-4">Add Swipe Options</h1>
-
-        {/* Status Field */}
         <div className="mb-4">
           <label htmlFor="status" className="block text-sm font-medium text-gray-600">
             Status
@@ -70,7 +66,6 @@ export default function AddSwipeOption(props) {
             className="mt-1 p-2 w-full border rounded-md"
           />
         </div>
-
         {/* Active Field */}
         <div className="mb-4">
           <label htmlFor="active" className="block text-sm font-medium text-gray-600">
@@ -103,8 +98,6 @@ export default function AddSwipeOption(props) {
             </label>
           </div>
         </div>
-
-        {/* Submit Button */}
         <button
           type="button"
           onClick={handleSubmit}

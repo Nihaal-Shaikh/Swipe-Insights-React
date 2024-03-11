@@ -1,12 +1,7 @@
 import {
 	HiOutlineViewGrid,
-	HiOutlineCube,
-	HiOutlineShoppingCart,
-	HiOutlineUsers,
-	HiOutlineDocumentText,
-	HiOutlineAnnotation,
-	HiOutlineQuestionMarkCircle,
-	HiOutlineCog
+	HiPhotograph,
+	HiOutlineArrowsExpand
 } from 'react-icons/hi'
 
 export const DASHBOARD_SIDEBAR_LINKS = [
@@ -20,18 +15,12 @@ export const DASHBOARD_SIDEBAR_LINKS = [
 		key: 'images',
 		label: 'Images',
 		path: '/web-admin/images',
-		icon: <HiOutlineCube />
+		icon: <HiPhotograph />
 	},
 	{
 		key: 'swipe-options',
 		label: 'Swipe Options',
 		path: '/web-admin/swipe-options',
-		icon: <HiOutlineShoppingCart />
-	},
-	{
-		key: 'usrs',
-		label: 'Users',
-		path: '/web-admin/users',
-		icon: <HiOutlineUsers />
+		icon: <HiOutlineArrowsExpand />
 	}
 ];
