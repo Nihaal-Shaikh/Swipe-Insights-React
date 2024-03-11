@@ -6,7 +6,7 @@ export default function Login({ children }) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [loginError, setLoginError] = useState("");
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
@@ -18,6 +18,14 @@ export default function Login({ children }) {
                 password,
             });
 
+            if(response.data.updatedFiveEntries === 1) {
+                setLoginError("You have already given your insights for today. Try again after 24 hrs.");
+                setTimeout(() => {
+                    setLoginError("")
+                }, 5000);
+                return;
+            }
+
             const tokenable_id = response.data.token.tokenable_id;
             const user_name = response.data.name;
 
@@ -26,24 +34,23 @@ export default function Login({ children }) {
             localStorage.setItem("userName", user_name);
 
             navigate("/image-swiper");
-
-            // Handle the token as needed (store in localStorage, context, etc.)
-
-            setIsLoggedIn(true);
-            // You may want to redirect or perform other actions here
         } catch (error) {
             console.error("Error during login:", error);
+            setLoginError("Invalid credentials. Please try again.");
+            setTimeout(() => {
+                setLoginError("")
+            }, 5000);
             // Handle login error (show a message, redirect, etc.)
         }
-    };  
-    
+    };
+
     // Check localStorage for tokenableId on component mount
     useEffect(() => {
-      const storedTokenableId = localStorage.getItem("tokenableId");
-  
-      if (storedTokenableId) {
-        navigate('/image-swiper');
-      }
+        const storedTokenableId = localStorage.getItem("tokenableId");
+
+        if (storedTokenableId) {
+            navigate('/image-swiper');
+        }
     }, [navigate]);
 
     return (
@@ -63,6 +70,7 @@ export default function Login({ children }) {
                     onChange={(e) => setPassword(e.target.value)}
                     className="w-full p-3 rounded-md border border-gray-300 focus:outline-none focus:border-teal-500"
                 />
+                <div className="text-red-500 text-sm">{loginError}</div>
                 <button
                     type="submit"
                     className="w-full bg-teal-500 text-white p-3 rounded-md hover:bg-teal-600 transition duration-300 focus:outline-none"
