@@ -1,13 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from "react-router-dom";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
-export default function AddSwipeOption() {
+export default function AddSwipeOption(props) {
 
   const navigate = useNavigate();
   
   const [status, setStatus] = useState('');
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(1);
+	const { editpage, editData } = props;
+  const { id } = useParams();
+
+  	// Edited data
+	useEffect(() => {
+		if (editData) {
+      setStatus(editData.status);
+      setActive(editData.active)
+		}
+		if (!editpage) {
+			setActive(1);
+		}
+	}, [props]);
 
   const handleStatusChange = (e) => {
     setStatus(e.target.value);
@@ -18,12 +32,12 @@ export default function AddSwipeOption() {
   };
 
   const handleSubmit = () => {
-    console.log(status);
-    console.log(active);
-    axios.post('http://127.0.0.1:8000/api/web-admin/add-image-status', {
-      status,
-      active,
-    })
+
+    const requestData = editpage
+    ? { id, status, active }
+    : { status, active };
+
+    axios.post('http://127.0.0.1:8000/api/web-admin/add-image-status', requestData)
     .then(response => {
       // Handle the response as needed
       console.log('API response:', response.data);

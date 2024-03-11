@@ -7,6 +7,7 @@ import Dashboard from '../components/Admin/Dashboard';
 import Images from '../components/Admin/Images';
 import ImageStatus from '../components/Admin/ImageStatus';
 import AddSwipeOption from '../components/Admin/AddSwipeOption';
+import EditSwipeOption from '../components/Admin/EditSwipeOption';
 
 export default function AppRoutes() {
 
@@ -22,6 +23,7 @@ export default function AppRoutes() {
                 <Route path="swipe-options">
                     <Route index element={<ImageStatus />} />
                     <Route path="add" element={<AddSwipeOption />} />
+                    <Route path="edit/:id" element={<EditSwipeOption />} />
                 </Route>
             </Route>
             <Route path='/web-admin/login' element={<div>This is the login page</div>} />

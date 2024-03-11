@@ -33,31 +33,23 @@ export default function ImageStatus() {
             headerName: 'Actions', field: 'id', minWidth: 100, maxWidth: 100,
             cellRenderer: (params) => (
                 <div className="ag-theme-content-text-center">
-                    {params.rowIndex < 2 && (
-                        // Render nothing for the first 2 entries
-                        <span style={{ display: 'none' }}></span>
-                    )}
-                    {params.rowIndex >= 2 && (
-                        // Render edit and delete icons for entries from index 2 onwards
-                        <>
-                            <span className="icon" style={{ cursor: 'pointer', marginRight: '5px' }} onClick={() => editClicked(params.data.id)}>
-                                <FaEdit />
-                            </span>
-                            <span className="icon" style={{ cursor: 'pointer' }} onClick={() => deleteClicked(params.data.id)}>
-                                <FaTrash />
-                            </span>
-                        </>
-                    )}
+                  {params.rowIndex < 2 && (
+                    // Render nothing for the first 2 entries
+                    <span style={{ display: 'none' }}></span>
+                  )}
+                  {params.rowIndex >= 2 && (
+                    // Render edit and delete icons with flexbox for one-line layout
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Link to={`/web-admin/swipe-options/edit/${params.value}`} title="Edit" className="grid-action-btns text-success link"><FaEdit /></Link>
+                      <span className="icon" style={{ cursor: 'pointer' }} onClick={() => deleteClicked(params.data.id)}>
+                        <FaTrash />
+                      </span>
+                    </div>
+                  )}
                 </div>
-            ),
+              ),
         },
     ];
-
-    // Function to handle edit action
-    const editClicked = (id) => {
-        // Implement your edit logic here
-        console.log(`Edit clicked for ID: ${id}`);
-    };
 
     // Function to handle delete action
     const deleteClicked = (id) => {
