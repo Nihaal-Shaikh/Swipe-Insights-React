@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Login from "./Login";
-import ForgotPassword from "./ForgotPassword";
+import Login from "./Authentication/Login";
+import ForgotPassword from "./Authentication/ForgotPassword";
 import ReactCardFlip from "react-card-flip";
-import Register from "./Register";
+import Register from "./Authentication/Register";
 
 export default function MainPage() {
 

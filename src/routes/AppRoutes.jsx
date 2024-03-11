@@ -1,10 +1,10 @@
 import { Route, Routes } from 'react-router'
 import MainPage from '../components/Web/MainPage';
-import ForgotPassword from '../components/Web/ForgotPassword';
+import ForgotPassword from '../components/Web/Authentication/ForgotPassword';
 import ImageSwiper from '../components/Web/ImageSwiper'
 import Layout from '../components/Admin/Layout';
 import Dashboard from '../components/Admin/Dashboard';
-import Images from '../components/Admin/Images';
+import Images from '../components/Admin/Images/Images';
 import AddSwipeOption from '../components/Admin/SwipeOptions/AddSwipeOption';
 import EditSwipeOption from '../components/Admin/SwipeOptions/EditSwipeOption';
 import SwipeOptions from '../components/Admin/SwipeOptions/SwipeOptions';
