@@ -2,7 +2,7 @@ import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "re
 import { useNavigate } from "react-router-dom";
 import { createPortal } from "react-dom";
 
-const Modal = forwardRef(function Modal({ onReset, type }, ref) {
+const Modal = forwardRef(function Modal({ onReset, type, onDelete }, ref) {
 
     const dialog = useRef();
     const navigate = useNavigate();
@@ -10,7 +10,7 @@ const Modal = forwardRef(function Modal({ onReset, type }, ref) {
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
-        if (isOpen && type !== 'noImages' && type !== 'statusError') {
+        if (isOpen && type !== 'noImages' && type !== 'statusError' && type !== 'confirmDelete') {
             const countdownInterval = setInterval(() => {
                 setCountdown((prevCountdown) => (prevCountdown > 0 ? prevCountdown - 1 : 0));
             }, 1000);
@@ -50,6 +50,12 @@ const Modal = forwardRef(function Modal({ onReset, type }, ref) {
         navigate("/");
     };
 
+    const handleYesClick = () => {
+        onDelete();
+        ref.current.close();
+    };
+    
+
     return createPortal(
         <dialog ref={dialog} className="result-modal" onClose={onReset}>
             {type === 'successful' ? (
@@ -63,15 +69,26 @@ const Modal = forwardRef(function Modal({ onReset, type }, ref) {
                     <p>Sorry! There are no images available to swipe at the moment</p>
                     <p>Please try again another time</p>
                 </>
-            ) : (
+            ) : type === "statusError" ? (
                 <>
                     <p>Swipe options are not available</p>
                     <p>Please contact the Swipe Insights team</p>
                 </>
+            ) : (
+                <>
+                    <p className="text-center mb-4">Are you sure you want to delete this option?</p>
+                    <div className="flex justify-center gap-4">
+                        <button onClick={() => handleYesClick()}>Yes</button>
+                        <button onClick={() => ref.current.close()}>No</button>
+                    </div>
+                </>
+
             )}
-            <form method="dialog" onSubmit={handleReset}>
-                <button>Close</button>
-            </form>
+            {type !== "confirmDelete" && (
+                <form method="dialog" onSubmit={handleReset}>
+                    <button>Close</button>
+                </form>
+            )}
         </dialog>,
         document.getElementById('modal')
     );

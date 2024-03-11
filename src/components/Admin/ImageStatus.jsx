@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { AgGridReact } from 'ag-grid-react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
@@ -6,9 +6,13 @@ import axios from 'axios';
 
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
+import Modal from "../Web/Modal";
 
 export default function ImageStatus() {
     const [rowData, setRowData] = useState([]);
+    const dialog = useRef();
+	const [delRecId, setDelRecId] = useState(0);
+    const [optionDeleted, setOptionDeleted] = useState(false);
 
     useEffect(() => {
         // Fetch data from Laravel backend
@@ -53,12 +57,38 @@ export default function ImageStatus() {
 
     // Function to handle delete action
     const deleteClicked = (id) => {
-        // Implement your delete logic here
-        console.log(`Delete clicked for ID: ${id}`);
+
+        setDelRecId(id);
+        
+        if(dialog.current){
+            dialog.current.open();
+          }
     };
+
+    const handleDelete = () => {
+        axios.delete(`http://127.0.0.1:8000/api/web-admin/delete-image-status/${delRecId}`)
+          .then((response) => {
+            setOptionDeleted((prevOption) => !prevOption);
+            console.log('Delete successful');
+            // Optionally handle the response or perform any other actions
+          })
+          .catch((error) => {
+            console.error('Error deleting data:', error);
+          });
+	}
+
+	useEffect(() => {
+        // Fetch data from Laravel backend
+        axios.get('http://127.0.0.1:8000/api/web-admin/image-status')
+            .then(response => {
+                setRowData(response.data);
+            })
+            .catch(error => console.error('Error fetching data:', error));
+	}, [optionDeleted]);
 
     return (
         <div>
+            <Modal ref={dialog} type='confirmDelete' onDelete={handleDelete} />
             <p>These are the statuses</p>
             <Link to='/web-admin' className="underline">Go to dashboard</Link>
 

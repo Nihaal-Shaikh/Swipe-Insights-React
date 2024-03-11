@@ -156,7 +156,6 @@ export default function ImageSwiper() {
     const storedTokenableId = localStorage.getItem("tokenableId");
 
     if (!storedTokenableId) {
-      console.log('hi');
       navigate('/');
     }
   }, [navigate]);

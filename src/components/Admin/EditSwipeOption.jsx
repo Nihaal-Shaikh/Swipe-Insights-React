@@ -19,7 +19,6 @@ export default function EditSwipeOption() {
               .catch((error) => {
                 console.error('Error fetching edit data:', error);
               });
-
     }, [id]);
 
     return (
