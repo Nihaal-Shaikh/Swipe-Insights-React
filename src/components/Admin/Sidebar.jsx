@@ -17,7 +17,6 @@ export default function Sidebar() {
           <SidebarLink key={item.key} item={item} />
         ))}
       </div>
-      <div>Bottom part</div>
     </div>
   );
 };

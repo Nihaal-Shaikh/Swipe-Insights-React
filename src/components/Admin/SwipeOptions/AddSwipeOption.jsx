@@ -14,9 +14,9 @@ export default function AddSwipeOption(props) {
 
   	// Edited data
 	useEffect(() => {
-		if (editData) {
-      setStatus(editData.status);
-      setActive(editData.active)
+		if (editpage) {
+      setStatus(editData?.status);
+      setActive(editData?.active);
 		}
 		if (!editpage) {
 			setActive(1);
@@ -32,7 +32,6 @@ export default function AddSwipeOption(props) {
   };
 
   const handleSubmit = () => {
-
     const requestData = editpage
     ? { id, status, active }
     : { status, active };

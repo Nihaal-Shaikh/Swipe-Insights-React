@@ -22,7 +22,7 @@ export default function Images() {
     // Ag-Grid column definitions
     const columnDefs = [
         { headerName: 'ID', field: 'id', sortable: true, filter: true },
-        { headerName: 'Customer Name', field: 'user.name', sortable: true, filter: true },
+        { headerName: 'Customer Name', field: 'user', sortable: true, filter: true },
         { headerName: 'Image Name', field: 'image_name', sortable: true, filter: true },
         { headerName: 'Image Status', field: 'status.status', sortable: true, filter: true },
         {
