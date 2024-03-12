@@ -62,7 +62,7 @@ const Modal = forwardRef(function Modal({ onReset, type, onDelete }, ref) {
                 <>
                     <p>Thank you for your insights!</p>
                     <p>You will be logged out in</p>
-                    <p>{countdown}</p>
+                    <p className="text-center">{countdown}</p>
                 </>
             ) : type === "noImages" ? (
                 <>

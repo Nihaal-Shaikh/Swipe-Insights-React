@@ -26,7 +26,7 @@ export default function ImageSwiper() {
       .then(response => {
         setImages(response.data.images);
         setTimeout(() => {
-          if(images.length <= 0 && dialog.current) {
+          if (images.length <= 0 && dialog.current) {
             dialog.current.open();
           }
         }, 1);
@@ -39,9 +39,9 @@ export default function ImageSwiper() {
       .then(response => {
         setLeft(response.data.imageStatuses[0]);
         setRight(response.data.imageStatuses[1]);
-        if(response.data.imageStatuses.length < 2) {
-            setErrorStatus(true);
-            if(dialog.current){
+        if (response.data.imageStatuses.length < 2) {
+          setErrorStatus(true);
+          if (dialog.current) {
             dialog.current.open();
           }
         }
@@ -187,7 +187,7 @@ export default function ImageSwiper() {
                 <>
                   <Modal ref={dialog} type="successful" />
                   <p>Your answers will be submitted in</p>
-                  <span className="text-4xl font-bold mr-2">{countdown}</span>
+                  <p className="text-4xl font-bold mr-2 text-center">{countdown}</p>
                   <Loader />
                 </>
               )}
