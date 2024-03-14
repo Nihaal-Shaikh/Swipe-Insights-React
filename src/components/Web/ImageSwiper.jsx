@@ -3,9 +3,20 @@ import TinderCard from 'react-tinder-card';
 import './ImageSwiper.css'
 import axios from "axios";
 import Modal from './Modal';
-import Loader from './Loader';
 import { useNavigate } from "react-router-dom";
 import Header from './Header';
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
+
+const renderTime = ({ remainingTime }) => {
+
+  return (
+    <div className="timer flex flex-col items-center">
+      <div className="value text-8xl mb-2">{remainingTime}</div>
+      <div className="text">{remainingTime > 1 ? 'seconds' : 'second'}</div>
+    </div>
+  );
+
+};
 
 export default function ImageSwiper() {
 
@@ -187,8 +198,17 @@ export default function ImageSwiper() {
                 <>
                   <Modal ref={dialog} type="successful" />
                   <p>Your answers will be submitted in</p>
-                  <p className="text-4xl font-bold mr-2 text-center">{countdown}</p>
-                  <Loader />
+                  <div className="timer-wrapper mt-4">
+                    <CountdownCircleTimer
+                      isPlaying
+                      duration={5}
+                      colors='#40E0D0'
+                      onComplete={() => ({ shouldRepeat: true, delay: 1 })}
+                      size={260}
+                    >
+                      {renderTime}
+                    </CountdownCircleTimer>
+                  </div>
                 </>
               )}
             </div>
