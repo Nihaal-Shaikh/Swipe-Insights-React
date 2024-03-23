@@ -6,6 +6,7 @@ import axios from 'axios';
 
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
+import CustomTooltip from "./CustomTooltip";
 
 export default function Images() {
     const [rowData, setRowData] = useState([]);
@@ -23,6 +24,20 @@ export default function Images() {
     const columnDefs = [
         { headerName: 'ID', field: 'id', sortable: true, filter: true },
         { headerName: 'Customer Name', field: 'user', sortable: true, filter: true },
+        {
+            headerName: 'Image', field: 'id', minWidth: 100, maxWidth: 100, tooltipField: 'image_path', 
+            tooltipComponent: CustomTooltip,
+            cellRenderer: (params) => (
+                <div className="ag-theme-content-text-center">
+                    <img
+                        src={`http://127.0.0.1:8000/storage/images/${params.data.image_name}`}
+                        alt={params.data.image_name}
+                        className="w-10 h-10 rounded-full mr-2"
+                        onMouseOver={() => handleMouseOver(params.data)}
+                    />
+                </div>
+            ),
+        },
         { headerName: 'Image Name', field: 'image_name', sortable: true, filter: true },
         { headerName: 'Image Status', field: 'status.status', sortable: true, filter: true },
         {
